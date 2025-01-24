@@ -76,30 +76,6 @@ wav_file_path = "/content/480p.wav"  # Replace with desired WAV file path
 
 convert_mp4_to_wav(mp4_file_path, wav_file_path)
 
-# Audio file path automation
-
-def process_video_folder(folder_path):
-    """
-    Process all video files in the given folder.
-
-    Args:
-        folder_path (str): Path to the folder containing video files.
-    """
-    # Supported video formats
-    supported_formats = (".mp4", ".mkv", ".avi", ".mov", ".flv", ".wmv")
-
-    # Iterate through all files in the folder
-    for file_name in os.listdir(folder_path):
-        if file_name.endswith(supported_formats):
-            video_path = os.path.join(folder_path, file_name)
-            wav_file = os.path.splitext(video_path)[0] + ".wav"
-            subtitle_file = os.path.splitext(video_path)[0] + ".vtt"
-
-            print(f"\nProcessing video: {file_name}")
-            convert_mp4_to_wav(video_path, wav_file)
-            generate_subtitles(wav_file, subtitle_file)
-
-
 if __name__ == "__main__":
     # Input video/audio file path
 
