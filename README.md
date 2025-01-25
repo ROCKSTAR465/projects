@@ -1,6 +1,6 @@
 # **SubNXT - Generate Subtitles for Videos**
 
-[Streamlit](https://subtitles.streamlit.app/)
+[Streamlit](https://subtitles.streamlit.app/) -click to open the web app
 
 SubNXT is a Streamlit-based web application that allows users to generate English subtitles for videos in real-time. Powered by OpenAI's Whisper model, it can transcribe videos in any language and provide accurate translations into English. Users can upload a video, generate subtitles in WebVTT format, preview the video with subtitles, and download the generated subtitle file.
 
@@ -9,15 +9,25 @@ SubNXT is a Streamlit-based web application that allows users to generate Englis
 - 🔤 **Subtitle Generation**: Automatically transcribe and translate videos into English subtitles.
 - 🖥️ **Video Playback with Subtitles**: Watch your video directly within the app, complete with subtitles.
 - 📥 **Download Subtitles**: Download the generated subtitles as a `.vtt` file for future use.
+- 🐍 Standalone Script: Use the provided Python script to generate subtitles locally without the web app.
 
 ---
 
 ## **How It Works**
+
+### **Web App SubNXT**
 1. Upload an MP4 video file.
 2. The app processes the video using OpenAI's Whisper model.
 3. Subtitles are generated and saved in WebVTT format.
 4. The video is displayed with subtitles embedded, and the subtitle file can be downloaded.
 
+### **Standalone Python Script offsub.py**
+1. Run the Python script on your machine.
+2. Provide the path to your video file.
+3. Subtitles are generated and saved in the same directory as the input video.
+### **Note:-**
+  Download and install ffmpeg file in your machine and add the bin files to the system path variables.
+  This is to ensure errorfree execution of the file.
 ---
 
 ## **Installation**
@@ -29,7 +39,7 @@ cd subnxt
 ```
 
 ### **2. Install Dependencies**
-Ensure you have Python 3.9+ installed. Then, install the required dependencies:
+Ensure you have Python 3.9+ installed (preferably python 3.11). Then, install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -56,25 +66,27 @@ FFmpeg is required for video processing. Install it using the appropriate method
 
 ## **Usage**
 
-### **1. Run the App**
+### **1. Run the Web App**
 Launch the Streamlit app locally:
 ```bash
 streamlit run subtitles.py
 ```
 
-### **2. Open the App in Your Browser**
 Once the app is running, open your browser and go to:
 ```
 http://localhost:8501
 ```
 
-### **3. Upload a Video**
-1. Drag and drop or select an MP4 video file to upload.
-2. Wait while the app generates subtitles.
+### **2. Use the Standalone Python Script**
+Run the standalone script `offsub.py` to generate subtitles directly:
+```bash
+python offsub.py --video_path /path/to/video.mp4 --output_path /path/to/output.vtt --model_type base
+```
 
-### **4. Preview and Download**
-- Watch your video with subtitles embedded.
-- Download the generated `.vtt` subtitle file.
+#### **Script Options**
+- `--video_path`: Path to the input video file.
+- `--output_path`: (Optional) Path to save the subtitle file. Defaults to `subtitles.vtt` in the current directory.
+- `--model_type`: (Optional) Whisper model type (`base`, `small`, `medium`, or `large`). Defaults to `base`.
 
 ---
 
@@ -82,6 +94,7 @@ http://localhost:8501
 ```
 subnxt/
 ├── subtitles.py          # Main Streamlit app
+├── generate_subtitles.py # Standalone script for local subtitle generation
 ├── requirements.txt      # Python dependencies
 ├── uploads/              # Directory for uploaded files (created dynamically)
 ```
@@ -96,16 +109,9 @@ subnxt/
 
 ---
 
-## **Example**
-![App Screenshot](https://via.placeholder.com/800x400?text=Add+Screenshot)
-
----
-
 ## **Future Improvements**
 - Add support for more subtitle formats (e.g., SRT).
 - Allow selection of transcription language.
-- Provide cloud deployment (e.g., Streamlit Community Cloud, AWS).
-- Enable multi-user support for simultaneous processing.
 
 ---
 
@@ -126,8 +132,8 @@ Contributions are welcome! To contribute:
 
 ## **Contact**
 For any inquiries or issues, feel free to reach out:
-- **Email**: your-email@example.com
-- **GitHub**: [your-username](https://github.com/your-username)
+- **Email**: kumaarsk390@gmail.com
+- **GitHub**: [ROCKSTAR465](https://github.com/ROCKSTAR465)
 
 ---
 
@@ -135,6 +141,9 @@ For any inquiries or issues, feel free to reach out:
 
 ---
 
-**Next Steps:**
-- **a.** Would you like help writing a `LICENSE` file for your project?  
-- **b.** Do you want assistance deploying this app to a cloud platform like Streamlit Cloud or AWS?
+### Example for `generate_subtitles.py`
+```bash
+python generate_subtitles.py --video_path example_video.mp4
+```
+Subtitles will be saved as `subtitles.vtt` in the current directory.
+
