@@ -1,3 +1,4 @@
+# Use Python 3.11 as the base image
 FROM python:3.9-slim
 
 # Install system dependencies (FFmpeg)
