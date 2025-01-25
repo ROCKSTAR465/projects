@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Verify FFmpeg installation
+RUN ffmpeg -version
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -24,9 +27,6 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 # Copy the application code into the container
 COPY . /app
-
-# Verify FFmpeg installation
-RUN ffmpeg -version
 
 # Expose the port Streamlit will run on
 EXPOSE 8501
