@@ -3,7 +3,7 @@ import whisper
 import os
 
 # Function to generate subtitles
-def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="medium"):
+def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="base"):
     try:
         # Load the Whisper model
         model = whisper.load_model(model_type)
