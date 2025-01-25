@@ -4,23 +4,21 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements.txt to the container
-COPY requirements.txt /app/requirements.txt
-
-# Install system-level dependencies, including ffmpeg, and Python dependencies
-RUN apt-get update && apt-get install -y \
+# Install system-level dependencies, including ffmpeg
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    && pip install --no-cache-dir -r requirements.txt \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy the entire application code into the container
+# Copy requirements.txt and install dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy the application code to the container
 COPY . /app
 
-# Expose the default port for Streamlit
+# Expose the default Streamlit port
 EXPOSE 8501
 
-# Set the entrypoint to run the Streamlit app
+# Command to run the Streamlit app
 ENTRYPOINT ["streamlit", "run"]
-
-# Specify the main script of your app
 CMD ["subtitles.py"]
