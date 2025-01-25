@@ -36,8 +36,8 @@ def format_timestamp(seconds):
 
 # Streamlit app
 def main():
-    st.title("Video Subtitle Generator with Whisper")
-    st.write("Upload a video file to generate subtitles and play it with subtitles.")
+    st.title("SubNXT")
+    st.write("Generate English Subtitles from any language and play it with subtitles.")
 
     # File upload
     uploaded_file = st.file_uploader("Upload a video file (MP4)", type=["mp4"])
@@ -49,7 +49,7 @@ def main():
         with open(mp4_file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
-        st.write(f"File saved at: {mp4_file_path}")
+        # st.write(f"File saved at: {mp4_file_path}")
 
         # Generate subtitles directly from the MP4 file
         subtitle_file = "subtitles.vtt"
