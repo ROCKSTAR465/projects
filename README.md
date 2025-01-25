@@ -1,14 +1,6 @@
 # **SubNXT - Generate Subtitles for Videos**
 
-![Streamlit](https://subtitles.streamlit.app/)
-Here’s a **README.md** file for your Streamlit app. This file provides an overview of your project, instructions for setting it up, and details on how to use it. You can customize it further based on your specific app features.
-
----
-
-# Video Subtitle Generator with Whisper
-
-![Streamlit]([https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white]https://subtitles.streamlit.app/))
-
+[Streamlit](https://subtitles.streamlit.app/)
 
 SubNXT is a Streamlit-based web application that allows users to generate English subtitles for videos in real-time. Powered by OpenAI's Whisper model, it can transcribe videos in any language and provide accurate translations into English. Users can upload a video, generate subtitles in WebVTT format, preview the video with subtitles, and download the generated subtitle file.
 
