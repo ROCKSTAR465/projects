@@ -25,8 +25,11 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy the application code into the container
 COPY . /app
 
+# Verify FFmpeg installation
+RUN ffmpeg -version
+
 # Expose the port Streamlit will run on
 EXPOSE 8501
 
 # Run the app with Streamlit
-CMD ["streamlit", "run", "subtitles.py"]
+CMD ["streamlit", "run", "subtitles.py", "--server.port=8501", "--server.address=0.0.0.0"]
