@@ -11,8 +11,7 @@ ENV PYTHONUNBUFFERED=1 \
 # Install system dependencies (FFmpeg and others)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    gcc \
-    libc-dev \
+    libsndfile1 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
