@@ -1,18 +1,33 @@
 # Use Python 3.11 as the base image
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Install system dependencies (FFmpeg)
-RUN apt-get update && apt-get install -y ffmpeg
+# Set environment variables to avoid Streamlit runtime prompts
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    STREAMLIT_SERVER_PORT=8501 \
+    STREAMLIT_SERVER_ENABLE_CORS=false \
+    STREAMLIT_SERVER_HEADLESS=true
+
+# Install system dependencies (FFmpeg and others)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    gcc \
+    libc-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /app
 
 # Copy requirements.txt and install Python dependencies
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r /app/requirements.txt
 
-ENV PATH="/usr/bin/ffmpeg:${PATH}"
+# Copy the application code into the container
+COPY . /app
 
-# Copy the app code
-COPY . .
+# Expose the port Streamlit will run on
+EXPOSE 8501
 
-# Run the app
-CMD ["streamlit", "run", "app.py"]
+# Run the app with Streamlit
+CMD ["streamlit", "run", "subtitles.py"]
