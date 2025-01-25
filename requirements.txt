@@ -3,4 +3,7 @@ openai-whisper==20231106
 moviepy==1.0.3
 numpy==1.23.5
 torch==2.0.1
-setuptools==69.0.3
+
+# Install FFmpeg using apt-get
+--system
+ffmpeg
