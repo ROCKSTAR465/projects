@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Run the app
-CMD ["streamlit", "run", "app.py"]
+CMD ["streamlit", "run", "subtitles.py"]
