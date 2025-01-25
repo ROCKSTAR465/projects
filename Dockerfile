@@ -1,18 +1,26 @@
-# Use Python 3.9 as the base image
+# Use the official Python image as the base image
 FROM python:3.9-slim
 
-# Install system dependencies (FFmpeg)
-RUN apt-get update && apt-get install -y ffmpeg
+# Set the working directory in the container
+WORKDIR /app
 
-# Verify FFmpeg installation
-RUN ffmpeg -version
+# Copy the requirements.txt to the container
+COPY requirements.txt /app/requirements.txt
 
-# Copy requirements.txt and install Python dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Install system-level dependencies, including ffmpeg, and Python dependencies
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy the app code
-COPY . .
+# Copy the entire application code into the container
+COPY . /app
 
-# Run the app
-CMD ["streamlit", "run", "subtitles.py"]
+# Expose the default port for Streamlit
+EXPOSE 8501
+
+# Set the entrypoint to run the Streamlit app
+ENTRYPOINT ["streamlit", "run"]
+
+# Specify the main script of your app
+CMD ["subtitles.py"]
