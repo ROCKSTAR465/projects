@@ -9,6 +9,8 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
+ENV PATH="/usr/bin/ffmpeg:${PATH}"
+
 # Copy the app code
 COPY . .
 
