@@ -1,154 +1,142 @@
-# subtitles
-
-!pip install openai-whisper
-
-ensure that moviepy is installed in your local machine before running it locally
-
-!pip install moviepy
-
-Here’s a **README.md** file for your Streamlit app. This file provides an overview of your project, instructions for setting it up, and details on how to use it. You can customize it further based on your specific app features.
-
----
-
-# Video Subtitle Generator with Whisper
+# **SubNXT - Generate Subtitles for Videos**
 
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Whisper](https://img.shields.io/badge/OpenAI_Whisper-412991?style=for-the-badge&logo=openai&logoColor=white)
 
-This is a **Streamlit app** that generates subtitles for video files using OpenAI's Whisper model. The app allows users to upload a video file, transcribe the audio, and generate subtitles in WebVTT format. The subtitles can be downloaded and displayed alongside the video.
+SubNXT is a Streamlit-based web application that allows users to generate English subtitles for videos in real-time. Powered by OpenAI's Whisper model, it can transcribe videos in any language and provide accurate translations into English. Users can upload a video, generate subtitles in WebVTT format, preview the video with subtitles, and download the generated subtitle file.
+
+## **Features**
+- 🎥 **Video Upload**: Upload MP4 video files for processing.
+- 🔤 **Subtitle Generation**: Automatically transcribe and translate videos into English subtitles.
+- 🖥️ **Video Playback with Subtitles**: Watch your video directly within the app, complete with subtitles.
+- 📥 **Download Subtitles**: Download the generated subtitles as a `.vtt` file for future use.
 
 ---
 
-## Features
-
-- **Video Upload**: Upload video files in MP4 format.
-- **Subtitle Generation**: Automatically generate subtitles using OpenAI's Whisper model.
-- **Real-Time Playback**: Play the video with subtitles directly in the app.
-- **Download Subtitles**: Download the generated subtitles in WebVTT format.
-
----
-
-## Prerequisites
-
-Before running the app, ensure you have the following installed:
-
-- **Docker** (for containerized deployment)
-- **Python 3.9+** (if running locally)
-- **FFmpeg** (for audio/video processing)
+## **How It Works**
+1. Upload an MP4 video file.
+2. The app processes the video using OpenAI's Whisper model.
+3. Subtitles are generated and saved in WebVTT format.
+4. The video is displayed with subtitles embedded, and the subtitle file can be downloaded.
 
 ---
 
-## Installation
+## **Installation**
 
-### 1. Clone the Repository
-
+### **1. Clone the Repository**
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/your-username/subnxt.git
+cd subnxt
 ```
 
-### 2. Build the Docker Image
-
+### **2. Install Dependencies**
+Ensure you have Python 3.9+ installed. Then, install the required dependencies:
 ```bash
-docker build -t streamlit-whisper-app .
+pip install -r requirements.txt
 ```
 
-### 3. Run the Docker Container
+### **3. Install FFmpeg**
+FFmpeg is required for video processing. Install it using the appropriate method for your operating system:
 
+- **Linux (Debian/Ubuntu):**
+  ```bash
+  sudo apt update
+  sudo apt install ffmpeg
+  ```
+
+- **MacOS (Homebrew):**
+  ```bash
+  brew install ffmpeg
+  ```
+
+- **Windows:**
+  1. Download FFmpeg from [ffmpeg.org](https://ffmpeg.org/).
+  2. Add FFmpeg to your system PATH.
+
+---
+
+## **Usage**
+
+### **1. Run the App**
+Launch the Streamlit app locally:
 ```bash
-docker run -p 8501:8501 streamlit-whisper-app
+streamlit run subtitles.py
 ```
 
-### 4. Access the App
-
-Open your browser and navigate to:
-
+### **2. Open the App in Your Browser**
+Once the app is running, open your browser and go to:
 ```
 http://localhost:8501
 ```
 
----
+### **3. Upload a Video**
+1. Drag and drop or select an MP4 video file to upload.
+2. Wait while the app generates subtitles.
 
-## Usage
-
-1. **Upload a Video**:
-   - Click the "Upload a video file" button and select a video file (MP4 format).
-
-2. **Generate Subtitles**:
-   - The app will automatically transcribe the audio and generate subtitles.
-
-3. **Play the Video**:
-   - The video will play with subtitles displayed in real-time.
-
-4. **Download Subtitles**:
-   - Click the "Download Subtitles (VTT)" button to download the subtitles in WebVTT format.
+### **4. Preview and Download**
+- Watch your video with subtitles embedded.
+- Download the generated `.vtt` subtitle file.
 
 ---
 
-## Configuration
-
-### Environment Variables
-
-You can configure the app using the following environment variables:
-
-- `STREAMLIT_SERVER_PORT`: Port on which the app runs (default: `8501`).
-- `STREAMLIT_SERVER_ENABLE_CORS`: Enable CORS (default: `false`).
-- `STREAMLIT_SERVER_HEADLESS`: Run in headless mode (default: `true`).
+## **Folder Structure**
+```
+subnxt/
+├── subtitles.py          # Main Streamlit app
+├── requirements.txt      # Python dependencies
+├── uploads/              # Directory for uploaded files (created dynamically)
+```
 
 ---
 
-## Technologies Used
-
-- **Streamlit**: For building the web app.
-- **OpenAI Whisper**: For transcribing audio and generating subtitles.
-- **FFmpeg**: For processing video and audio files.
-- **Docker**: For containerized deployment.
-
----
-
-## Contributing
-
-Contributions are welcome! If you'd like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeatureName`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/YourFeatureName`).
-5. Open a pull request.
+## **Technical Details**
+- **Framework**: [Streamlit](https://streamlit.io/)
+- **Model**: [OpenAI Whisper](https://github.com/openai/whisper)
+- **Video Processing**: FFmpeg
+- **Subtitle Format**: WebVTT (`.vtt`)
 
 ---
 
-## License
+## **Example**
+![App Screenshot](https://via.placeholder.com/800x400?text=Add+Screenshot)
 
+---
+
+## **Future Improvements**
+- Add support for more subtitle formats (e.g., SRT).
+- Allow selection of transcription language.
+- Provide cloud deployment (e.g., Streamlit Community Cloud, AWS).
+- Enable multi-user support for simultaneous processing.
+
+---
+
+## **License**
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## Acknowledgments
-
-- **OpenAI** for the Whisper model.
-- **Streamlit** for the amazing framework to build web apps.
-- **FFmpeg** for audio/video processing.
+## **Contributing**
+Contributions are welcome! To contribute:
+1. Fork this repository.
+2. Create a feature branch: `git checkout -b feature-name`.
+3. Commit your changes: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature-name`.
+5. Open a pull request.
 
 ---
 
-## Contact
-
-For questions or feedback, feel free to reach out:
-
-- **Your Name**: [your-email@example.com](mailto:your-email@example.com)
+## **Contact**
+For any inquiries or issues, feel free to reach out:
+- **Email**: your-email@example.com
 - **GitHub**: [your-username](https://github.com/your-username)
 
 ---
 
-Enjoy generating subtitles with ease! 🎥📝
+### **Try SubNXT Today! 🚀**
 
 ---
 
-### Customization Tips
-- Replace `your-username`, `your-repo-name`, and `your-email@example.com` with your actual GitHub username, repository name, and email.
-- Add screenshots or GIFs of your app to make the README more visually appealing.
-- Include additional sections if your app has more features or configurations.
-
-Let me know if you need further assistance! 😊
+**Next Steps:**
+- **a.** Would you like help writing a `LICENSE` file for your project?  
+- **b.** Do you want assistance deploying this app to a cloud platform like Streamlit Cloud or AWS?
