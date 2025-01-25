@@ -41,7 +41,6 @@ def main():
 
     # File upload
     uploaded_file = st.file_uploader("Upload a video file (MP4)", type=["mp4"])
-    # mp4_file_path = "uploads\480p.h264.mp4"
     if uploaded_file is not None:
         # Save the uploaded file
         mp4_file_path = os.path.join("uploads", uploaded_file.name)
@@ -49,13 +48,18 @@ def main():
         with open(mp4_file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
-        # st.write(f"File saved at: {mp4_file_path}")
-
-        # Generate subtitles directly from the MP4 file
+        # Generate subtitles
         subtitle_file = "subtitles.vtt"
         if generate_subtitles(mp4_file_path, subtitle_file):
-            # Display the video with subtitles
-            st.video(mp4_file_path, subtitles=subtitle_file)
+            # Embed video and subtitles using custom HTML
+            video_html = f"""
+            <video width="640" height="360" controls>
+                <source src="{mp4_file_path}" type="video/mp4">
+                <track src="{subtitle_file}" kind="subtitles" srclang="en" label="English" default>
+                Your browser does not support the video tag.
+            </video>
+            """
+            st.components.v1.html(video_html, height=400)
 
             # Provide download link for subtitles
             with open(subtitle_file, "rb") as f:
@@ -66,6 +70,5 @@ def main():
                     mime="text/vtt"
                 )
 
-# Run the app
 if __name__ == "__main__":
     main()
