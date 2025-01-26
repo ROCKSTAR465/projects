@@ -21,7 +21,7 @@ SubNXT is a Streamlit-based web application that allows users to generate Englis
 3. Subtitles are generated and saved in WebVTT format.
 4. The video is displayed with subtitles embedded, and the subtitle file can be downloaded.
 
-### **Standalone Python Script offsub.py**
+### **Standalone Python Script - offsub.py**
 1. Run the Python script on your machine.
 2. Provide the path to your video file.
 3. Subtitles are generated and saved in the same directory as the input video.
