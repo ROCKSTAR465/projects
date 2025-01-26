@@ -40,13 +40,25 @@ def main():
     st.write("Generate English Subtitles from any language and play it with subtitles.")
 
     # File upload
-    uploaded_file = st.file_uploader("Upload a video file (MP4)", type=["mp4"])
+   uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov", "mkv"])
+
     if uploaded_file is not None:
-        # Save the uploaded file
-        mp4_file_path = os.path.join("uploads", uploaded_file.name)
+        # Display the uploaded video
+        st.video(uploaded_file)
+
+        # Save the uploaded file to disk
+        save_path = os.path.join("uploads", uploaded_file.name)
         os.makedirs("uploads", exist_ok=True)  # Create the "uploads" directory if it doesn't exist
-        with open(mp4_file_path, "wb") as f:
+        with open(save_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
+
+        # Display the file path
+        # st.write(f"**File saved at:** `{save_path}`")
+        st.success("Video uploaded and saved successfully!")
+
+# Run the app
+if __name__ == "__main__":
+    main()
 
         # Generate subtitles directly from the MP4 file
         subtitle_file = "subtitles.vtt"
