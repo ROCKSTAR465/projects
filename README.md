@@ -15,7 +15,7 @@ SubNXT is a Streamlit-based web application that allows users to generate Englis
 
 ## **How It Works**
 
-### **Web App SubNXT**
+### **Web App SubNXT - subtitles.py**
 1. Upload an MP4 video file.
 2. The app processes the video using OpenAI's Whisper model.
 3. Subtitles are generated and saved in WebVTT format.
