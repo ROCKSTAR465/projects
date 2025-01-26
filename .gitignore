@@ -1,0 +1,28 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+env/
+*.env
+
+# Uploaded Files
+uploads/
+
+# Logs and Debugging Files
+*.log
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Temporary and Backup Files
+*.swp
+*.swo
+*.bak
+
+# Streamlit Specific
+.streamlit/secrets.toml  # If using Streamlit secrets
+.streamlit/config.toml   # Optional: Custom config files
