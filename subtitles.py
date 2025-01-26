@@ -1,6 +1,8 @@
 import streamlit as st
 import whisper
 import os
+import tempfile
+import base64
 
 # Function to generate subtitles
 def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="base"):
@@ -34,33 +36,50 @@ def format_timestamp(seconds):
     seconds = int(seconds % 60)
     return f"{hours:02}:{minutes:02}:{seconds:02}.{milliseconds:03}"
 
+# Function to encode file content as base64
+def encode_file_to_base64(file_path):
+    with open(file_path, "rb") as file:
+        return base64.b64encode(file.read()).decode("utf-8")
+
 # Streamlit app
 def main():
     st.title("SubNXT")
     st.write("Generate English Subtitles from any language and play it with subtitles.")
 
     # File upload
-    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov", "mkv"])
-
+    uploaded_file = st.file_uploader("Upload a video file (MP4, AVI, MOV, MKV)", type=["mp4", "avi", "mov", "mkv"])
     if uploaded_file is not None:
-        # Save the uploaded file to disk
-        mp4_file_path = os.path.join("uploads", uploaded_file.name)
-        os.makedirs("uploads", exist_ok=True)  # Create the "uploads" directory if it doesn't exist
-        with open(mp4_file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        st.success("Video uploaded and saved successfully!")
-        # Generate subtitles directly from the MP4 file
-        subtitle_file = "subtitles.vtt"
-        if generate_subtitles(mp4_file_path, subtitle_file):
+        # Save the uploaded file temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
+            temp_video.write(uploaded_file.getbuffer())
+            video_path = temp_video.name
+
+        # Generate subtitles and save temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".vtt") as temp_subtitle:
+            subtitle_path = temp_subtitle.name
+
+        # Generate subtitles
+        if generate_subtitles(video_path, subtitle_path):
+            # Encode video and subtitles for embedding
+            video_base64 = encode_file_to_base64(video_path)
+            subtitle_base64 = encode_file_to_base64(subtitle_path)
+
             # Embed video and subtitles using custom HTML
-            st.video(mp4_file_path, subtitles=subtitle_file)
-            
+            video_html = f"""
+            <video width="640" height="360" controls>
+                <source src="data:video/mp4;base64,{video_base64}" type="video/mp4">
+                <track src="data:text/vtt;base64,{subtitle_base64}" kind="subtitles" srclang="en" label="English" default>
+                Your browser does not support the video tag.
+            </video>
+            """
+            st.components.v1.html(video_html, height=400)
+
             # Provide download link for subtitles
-            with open(subtitle_file, "rb") as f:
+            with open(subtitle_path, "rb") as f:
                 st.download_button(
                     label="Download Subtitles (VTT)",
                     data=f,
-                    file_name=subtitle_file,
+                    file_name="subtitles.vtt",
                     mime="text/vtt"
                 )
 
