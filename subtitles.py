@@ -47,9 +47,9 @@ def main():
         st.video(uploaded_file)
 
         # Save the uploaded file to disk
-        save_path = os.path.join("uploads", uploaded_file.name)
+        mp4_file_path = os.path.join("uploads", uploaded_file.name)
         os.makedirs("uploads", exist_ok=True)  # Create the "uploads" directory if it doesn't exist
-        with open(save_path, "wb") as f:
+        with open(mp4_file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
         # Display the file path
