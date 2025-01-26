@@ -55,11 +55,6 @@ def main():
         # Display the file path
         # st.write(f"**File saved at:** `{save_path}`")
         st.success("Video uploaded and saved successfully!")
-
-# Run the app
-if __name__ == "__main__":
-    main()
-
         # Generate subtitles directly from the MP4 file
         subtitle_file = "subtitles.vtt"
         if generate_subtitles(mp4_file_path, subtitle_file):
