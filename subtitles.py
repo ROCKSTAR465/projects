@@ -48,7 +48,7 @@ def main():
         with open(mp4_file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
-        # Generate subtitles
+        # Generate subtitles directly from the MP4 file
         subtitle_file = "subtitles.vtt"
         if generate_subtitles(mp4_file_path, subtitle_file):
             # Embed video and subtitles using custom HTML
