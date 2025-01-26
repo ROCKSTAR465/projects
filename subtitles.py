@@ -1,7 +1,6 @@
 import streamlit as st
 import whisper
 import os
-import tempfile
 
 # Function to generate subtitles
 def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="base"):
@@ -43,16 +42,24 @@ def main():
     # File upload
     uploaded_file = st.file_uploader("Upload a video file (MP4)", type=["mp4"])
     if uploaded_file is not None:
-        # Save the uploaded file to a temporary location
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp_file:
-            tmp_file.write(uploaded_file.getbuffer())
-            tmp_file_path = tmp_file.name
+        # Save the uploaded file
+        mp4_file_path = os.path.join("uploads", uploaded_file.name)
+        os.makedirs("uploads", exist_ok=True)  # Create the "uploads" directory if it doesn't exist
+        with open(mp4_file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
 
-        # Generate subtitles
+        # Generate subtitles directly from the MP4 file
         subtitle_file = "subtitles.vtt"
-        if generate_subtitles(tmp_file_path, subtitle_file):
-            # Display the video using st.video()
-            st.video(uploaded_file)
+        if generate_subtitles(mp4_file_path, subtitle_file):
+            # Embed video and subtitles using custom HTML
+            video_html = f"""
+            <video width="640" height="360" controls>
+                <source src="{mp4_file_path}" type="video/mp4">
+                <track src="{subtitle_file}" kind="subtitles" srclang="en" label="English" default>
+                Your browser does not support the video tag.
+            </video>
+            """
+            st.components.v1.html(video_html, height=400)
 
             # Provide download link for subtitles
             with open(subtitle_file, "rb") as f:
@@ -62,11 +69,6 @@ def main():
                     file_name=subtitle_file,
                     mime="text/vtt"
                 )
-
-        # Clean up temporary files
-        os.unlink(tmp_file_path)
-        if os.path.exists(subtitle_file):
-            os.unlink(subtitle_file)
 
 if __name__ == "__main__":
     main()
