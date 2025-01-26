@@ -40,7 +40,7 @@ def main():
     st.write("Generate English Subtitles from any language and play it with subtitles.")
 
     # File upload
-   uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov", "mkv"])
+    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov", "mkv"])
 
     if uploaded_file is not None:
         # Display the uploaded video
