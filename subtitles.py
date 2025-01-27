@@ -8,7 +8,7 @@ import base64
 def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="base"):
     try:
         # Load the Whisper model
-        model = whisper.load_model(model_type)
+        model = whisper.load_model(model_type, device="cuda")
         
         # Transcribe the video file (MP4)
         result = model.transcribe(video_path, task="translate")
