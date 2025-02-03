@@ -6,7 +6,7 @@ import base64
 import torch
 
 # Function to generate subtitles
-def generate_subtitles(video_path, output_path, model_type):
+def generate_subtitles(video_path, output_path, model_type="base"):
     try:
         # Check if CUDA is available
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -49,12 +49,14 @@ def encode_file_to_base64(file_path):
 def main():
     st.title("SubNXT")
     st.write("Generate English Subtitles from any language and play it with subtitles.")
-    
+
+    # Select model type
     model_type = st.selectbox(
         "Select Whisper Model Type",
         ("base", "medium", "large"),
         help="Choose the model type: base, medium, or large."
     )
+
     # File upload
     uploaded_file = st.file_uploader("Upload a video file (MP4, AVI, MOV, MKV)", type=["mp4", "avi", "mov", "mkv"])
     if uploaded_file is not None:
@@ -70,7 +72,7 @@ def main():
         subtitle_path = f"{file_name}.vtt"
 
         # Generate subtitles
-        if generate_subtitles(video_path, subtitle_path):
+        if generate_subtitles(video_path, subtitle_path, model_type=model_type):
             # Encode video and subtitles for embedding
             video_base64 = encode_file_to_base64(video_path)
             subtitle_base64 = encode_file_to_base64(subtitle_path)
