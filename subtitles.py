@@ -53,7 +53,7 @@ def main():
     # Select model type
     model_type = st.selectbox(
         "Select Whisper Model Type",
-        ("base", "medium", "large"),
+        ("base", "medium"),
         help="Choose the model type: base, medium, or large."
     )
 
