@@ -3,12 +3,16 @@ import whisper
 import os
 import tempfile
 import base64
+import torch
 
 # Function to generate subtitles
-def generate_subtitles(video_path, output_path="subtitles.vtt", model_type="base"):
+def generate_subtitles(video_path, output_path, model_type="base"):
     try:
+        # Check if CUDA is available
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        
         # Load the Whisper model
-        model = whisper.load_model(model_type, device="cuda")
+        model = whisper.load_model(model_type, device=device)
         
         # Transcribe the video file (MP4)
         result = model.transcribe(video_path, task="translate")
@@ -49,14 +53,16 @@ def main():
     # File upload
     uploaded_file = st.file_uploader("Upload a video file (MP4, AVI, MOV, MKV)", type=["mp4", "avi", "mov", "mkv"])
     if uploaded_file is not None:
+        # Get the name of the uploaded file (without extension)
+        file_name = os.path.splitext(uploaded_file.name)[0]
+
         # Save the uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
             temp_video.write(uploaded_file.getbuffer())
             video_path = temp_video.name
 
-        # Generate subtitles and save temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".vtt") as temp_subtitle:
-            subtitle_path = temp_subtitle.name
+        # Generate subtitles and save with the same name as the uploaded file
+        subtitle_path = f"{file_name}.vtt"
 
         # Generate subtitles
         if generate_subtitles(video_path, subtitle_path):
@@ -79,7 +85,7 @@ def main():
                 st.download_button(
                     label="Download Subtitles (VTT)",
                     data=f,
-                    file_name="subtitles.vtt",
+                    file_name=os.path.basename(subtitle_path),
                     mime="text/vtt"
                 )
 
