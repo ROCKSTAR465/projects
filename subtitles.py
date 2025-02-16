@@ -65,7 +65,7 @@ def main():
         subtitle_path = f"{file_name}.vtt"
 
         # Generate subtitles
-        if generate_subtitles(video_path, subtitle_path, model_type=model_type):
+        if generate_subtitles(video_path, subtitle_path):
             # Encode video and subtitles for embedding
             video_base64 = encode_file_to_base64(video_path)
             subtitle_base64 = encode_file_to_base64(subtitle_path)
