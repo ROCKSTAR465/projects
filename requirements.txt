@@ -1,7 +1,6 @@
 streamlit==1.26.0
-openai-whisper==20231106
+openai-whisper
 moviepy==1.0.3
-ffmpeg-python
 numpy==1.23.5
 torch==2.0.1
 setuptools==69.0.3
