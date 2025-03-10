@@ -4,7 +4,7 @@ import os
 import tempfile
 import base64
 import torch
-
+os.environ['STREAMLIT_SERVER_ENABLE_FILE_WATCHER'] = 'false'
 # Function to generate subtitles
 def generate_subtitles(video_path, output_path, model_type="medium"):
     try:
