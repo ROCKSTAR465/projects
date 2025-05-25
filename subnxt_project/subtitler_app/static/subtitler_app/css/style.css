@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header {
+    background-color: #007bff; /* Django blue */
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+main {
+    flex-grow: 1;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+h1, h2 {
+    color: #0056b3; /* Darker Django blue */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* Form styling for index.html */
+form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+form div {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input[type="file"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 18px); /* Adjust width considering padding and border */
+}
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Video player styling for results.html */
+video {
+    display: block;
+    margin: 20px auto; /* Center the video */
+    max-width: 100%; /* Responsive width */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Consistent h2 padding/margins */
+h2 {
+    margin-top: 0; /* Example: Adjust as needed */
+    padding-bottom: 10px; /* Example: Add some space below h2 */
+}
+
+/* Container class */
+.container {
+   max-width: 960px; 
+   margin-left: auto;
+   margin-right: auto;
+   padding: 0 15px; 
+}

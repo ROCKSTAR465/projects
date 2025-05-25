@@ -1,4 +1,4 @@
-streamlit>=1.30.0
+Django>=3.2
 openai-whisper>=20231106
 moviepy>=1.0.3
 ffmpeg-python>=0.2.0

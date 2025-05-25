@@ -1,0 +1,24 @@
+{% extends 'subtitler_app/base.html' %}
+
+{% block title %}Subtitle Results - {{ video_name }}{% endblock %}
+
+{% block content %}
+    <h2>Video: {{ video_name }}</h2>
+    
+    {% if video_url and vtt_url %}
+        <video width="720" height="480" controls>
+            <source src="{{ video_url }}" type="video/mp4">
+            <track src="{{ vtt_url }}" kind="subtitles" srclang="en" label="English" default>
+            Your browser does not support the video tag or the VTT format.
+        </video>
+        
+        <div style="margin-top: 20px;">
+            <a href="{{ vtt_url }}" download="{{ vtt_filename | default:'subtitles.vtt' }}" class="button">Download Subtitles (.vtt)</a>
+        </div>
+    {% else %}
+        <p>Sorry, there was an error processing your video or generating subtitles.</p>
+        <p><a href="{% url 'subtitler_app:index' %}">Try another video</a></p>
+    {% endif %}
+    
+    <p style="margin-top: 30px;"><a href="{% url 'subtitler_app:index' %}">Process another video</a></p>
+{% endblock %}

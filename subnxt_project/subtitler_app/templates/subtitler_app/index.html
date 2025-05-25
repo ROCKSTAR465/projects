@@ -1,0 +1,26 @@
+{% extends 'subtitler_app/base.html' %}
+
+{% block title %}Upload Video - SubNXT Django{% endblock %}
+
+{% block content %}
+    {% if error_message %}
+        <p style="color: red; border: 1px solid red; padding: 10px; border-radius: 5px;">
+            {{ error_message }}
+        </p>
+    {% endif %}
+    <h2>Upload a Video to Generate Subtitles</h2>
+    <form method="post" enctype="multipart/form-data" action="{% url 'subtitler_app:process_video' %}">
+        {% csrf_token %}
+        <div>
+            <label for="video_file">Choose video file:</label>
+            <input type="file" id="video_file" name="video_file" accept="video/*" required>
+        </div>
+        <br>
+        <div>
+            <button type="submit">Generate Subtitles</button>
+        </div>
+    </form>
+    <p style="margin-top: 20px; font-size: 0.9em; color: #555;">
+        Supported formats: MP4, AVI, MOV, MKV, etc. (Depends on FFmpeg capabilities)
+    </p>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SubNXT Django{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'subtitler_app/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>SubNXT - Subtitle Generator</h1>
+    </header>
+    <main>
+        <div class="container"> <!-- Added container for consistent width -->
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 SubNXT</p>
+    </footer>
+</body>
+</html>
