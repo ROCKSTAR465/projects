@@ -1,10 +1,6 @@
-streamlit>=1.30.0
-openai-whisper>=20231106
-moviepy>=1.0.3
-ffmpeg-python>=0.2.0
-numpy>=1.26.0
-torch>=2.2.0
-torchaudio
-torchvision
-setuptools>=69.0.3
-nest-asyncio>=1.5.8
+streamlit
+openai-whisper
+ffmpeg-python
+moviepy
+torch
+
