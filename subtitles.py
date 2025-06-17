@@ -564,7 +564,7 @@ with col1:
         
         # Video Preview Section
         if st.session_state.video_path and st.session_state.subtitles:
-            st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
+            # st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
             st.markdown('<div class="card-header"><span class="icon">🎥</span>Video Preview</div>', unsafe_allow_html=True)
             
             if st.session_state.video_base64 and st.session_state.vtt_base64:
@@ -586,7 +586,7 @@ with col1:
             st.markdown('</div>', unsafe_allow_html=True)  # Close card
             
             # Subtitle Editor Section
-            st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
+            # st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
             st.markdown('<div class="card-header"><span class="icon">📝</span>Subtitle Timeline</div>', unsafe_allow_html=True)
             st.info("Click on any subtitle to edit its text. Changes will be reflected in the video player.")
             
@@ -673,7 +673,7 @@ with col2:
     # Download Card
     if st.session_state.video_path and st.session_state.subtitles:
         with st.container():
-            st.markdown('<div class="glass-alt card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
+            # st.markdown('<div class="glass-alt card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
             st.markdown('<div class="card-header"><span class="icon">📥</span>Export Subtitles</div>', unsafe_allow_html=True)
             
             # Download VTT file
@@ -697,7 +697,7 @@ with col2:
             )
             
             # Subtitle settings
-            st.markdown('<div class="glass" style="padding: 1rem; border-radius: 12px; margin-top: 1.5rem;">', unsafe_allow_html=True)
+            # st.markdown('<div class="glass" style="padding: 1rem; border-radius: 12px; margin-top: 1.5rem;">', unsafe_allow_html=True)
             st.markdown('<h4 style="color: var(--primary);"><span class="icon">⚙️</span>Subtitle Settings</h4>', unsafe_allow_html=True)
             
             # Font size slider
