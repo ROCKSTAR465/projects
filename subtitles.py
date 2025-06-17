@@ -11,6 +11,7 @@ warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using F
 # Configure Streamlit page
 st.set_page_config(
     page_title="SubNXT Pro: AI Subtitle Generator",
+    page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -34,6 +35,7 @@ st.markdown("""
         --card-bg: rgba(17, 17, 17, 0.85);
         --title-gradient: linear-gradient(90deg, var(--primary), var(--accent-alt));
         --background-gradient: linear-gradient(135deg, var(--secondary) 0%, #0a142e 50%, #111111 100%);
+        --generate-btn-gradient: linear-gradient(135deg, #18ed71 0%, #764ba2 100%); /* Original button gradient */
     }
     
     /* Overall page styling */
@@ -117,7 +119,25 @@ st.markdown("""
         gap: 0.5rem;
     }
     
-    /* Buttons styling */
+    /* Buttons styling - SPECIAL STYLE FOR GENERATE BUTTON */
+    .generate-btn .stButton>button {
+        background: var(--generate-btn-gradient) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 30px !important;
+        padding: 0.8rem 1.5rem !important;
+        font-weight: 700 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(24, 237, 113, 0.4) !important;
+    }
+    
+    .generate-btn .stButton>button:hover {
+        background: linear-gradient(135deg, #18ed71 0%, #9f5afd 100%) !important;
+        transform: scale(1.05) !important;
+        box-shadow: 0 6px 20px rgba(159, 90, 253, 0.6) !important;
+    }
+    
+    /* Regular buttons */
     .stButton>button {
         background: var(--accent) !important;
         color: var(--secondary) !important;
@@ -164,30 +184,6 @@ st.markdown("""
         margin-bottom: 1.5rem;
         background: #000;
         border: 1px solid rgba(64, 224, 208, 0.3);
-    }
-    
-    .video-player {
-        width: 100%;
-        display: block;
-    }
-    
-    /* Subtitle display */
-    .subtitle-display {
-        position: absolute;
-        bottom: 60px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        padding: 15px 0;
-        background: rgba(17, 17, 17, 0.85);
-        color: #a0f0ed; /* Light Turquoise */
-        font-size: 1.8rem;
-        font-weight: 600;
-        text-shadow: 0 0 10px rgba(0,0,0,0.9);
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        border-top: 1px solid rgba(64, 224, 208, 0.3);
-        border-bottom: 1px solid rgba(64, 224, 208, 0.3);
     }
     
     /* Subtitle timeline */
@@ -271,25 +267,6 @@ st.markdown("""
         vertical-align: middle;
     }
     
-    /* Neon glow effect for video container */
-    .neon-glow {
-        position: relative;
-    }
-    
-    .neon-glow::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: var(--gradient);
-        z-index: -1;
-        filter: blur(15px);
-        opacity: 0.5;
-        border-radius: 14px;
-    }
-    
     /* Error messages */
     .stAlert {
         background-color: rgba(255, 107, 107, 0.15) !important;
@@ -323,6 +300,10 @@ if 'font_size' not in st.session_state:
     st.session_state.font_size = 1.8
 if 'position' not in st.session_state:
     st.session_state.position = "Bottom (Default)"
+if 'video_base64' not in st.session_state:
+    st.session_state.video_base64 = None
+if 'vtt_base64' not in st.session_state:
+    st.session_state.vtt_base64 = None
 
 def format_timestamp(seconds):
     """Convert seconds to VTT timestamp format"""
@@ -408,7 +389,7 @@ def get_base64_encoded_file(file_path):
         return base64.b64encode(f.read()).decode()
 
 # Main UI
-st.markdown('<h1 class="main-header">SubNXT Pro: AI Subtitle Generator</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header"><span class="icon">🎬</span>SubNXT Pro: AI Subtitle Generator</h1>', unsafe_allow_html=True)
 
 # Sidebar for controls
 with st.sidebar:
@@ -444,15 +425,15 @@ with st.sidebar:
     <div style="padding: 0.5rem 0; color: var(--light);">
         <div style="display: flex; align-items: center; margin: 10px 0;">
             <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
-            <span>Real-time subtitle display</span>
+            <span>Embedded subtitles in video player</span>
+        </div>
+        <div style="display: flex; align-items: center; margin: 10px 0;">
+            <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
+            <span>Direct subtitle editing in the web app</span>
         </div>
         <div style="display: flex; align-items: center; margin: 10px 0;">
             <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
             <span>Multi-format export</span>
-        </div>
-        <div style="display: flex; align-items: center; margin: 10px 0;">
-            <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
-            <span>Subtitle editing</span>
         </div>
         <div style="display: flex; align-items: center; margin: 10px 0;">
             <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
@@ -485,7 +466,8 @@ if uploaded_file is not None:
     file_size = len(uploaded_file.getvalue()) / (1024 * 1024)
     st.success(f"📁 **File uploaded:** {uploaded_file.name} ({file_size:.2f} MB)")
     
-    # Generate subtitles button
+    # Generate subtitles button with custom style
+    st.markdown('<div class="generate-btn">', unsafe_allow_html=True)
     if st.button("🚀 Generate Subtitles", type="primary", use_container_width=True):
         st.session_state.processing = True
         
@@ -495,59 +477,47 @@ if uploaded_file is not None:
             if subtitles:
                 st.session_state.subtitles = subtitles
                 st.session_state.processing = False
+                
+                # Encode video and subtitles for embedding
+                try:
+                    # Encode video
+                    with open(video_path, "rb") as video_file:
+                        video_bytes = video_file.read()
+                        st.session_state.video_base64 = base64.b64encode(video_bytes).decode('utf-8')
+                    
+                    # Encode VTT
+                    vtt_content = create_vtt_file(subtitles)
+                    st.session_state.vtt_base64 = base64.b64encode(vtt_content.encode('utf-8')).decode('utf-8')
+                except Exception as e:
+                    st.error(f"Error preparing video: {str(e)}")
+                
                 st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
                 
 st.markdown('</div>', unsafe_allow_html=True)  # Close card
 
 # Display video with subtitles if available
 if st.session_state.video_path and st.session_state.subtitles:
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<h2 class="card-header"><span class="icon">🎥</span>Video with Synchronized Subtitles</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="card-header"><span class="icon">🎥</span>Video with Embedded Subtitles</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([3, 1])
     
     with col1:
-        # Create custom video player with subtitle display
-        video_base64 = get_base64_encoded_file(st.session_state.video_path)
-        video_ext = os.path.splitext(st.session_state.video_path)[1].replace(".", "")
-        
-        # Create HTML video player with subtitle display
-        st.markdown(f"""
-        <div class="video-container neon-glow">
-            <video id="mainVideo" class="video-player" controls>
-                <source src="data:video/{video_ext};base64,{video_base64}" type="video/{video_ext}">
+        if st.session_state.video_base64 and st.session_state.vtt_base64:
+            # Create HTML video player with embedded subtitles
+            video_html = f"""
+            <video width="100%" height="360" controls style="border-radius: 10px; background: #000;">
+                <source src="data:video/mp4;base64,{st.session_state.video_base64}" type="video/mp4">
+                <track src="data:text/vtt;base64,{st.session_state.vtt_base64}" kind="subtitles" 
+                       srclang="en" label="English" default>
+                Your browser does not support the video tag.
             </video>
-            <div id="subtitleDisplay" class="subtitle-display">
-                {st.session_state.current_subtitle}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # JavaScript to sync subtitles with video
-        subtitles_json = json.dumps(st.session_state.subtitles)
-        st.markdown(f"""
-        <script>
-        const video = document.getElementById('mainVideo');
-        const subtitleDisplay = document.getElementById('subtitleDisplay');
-        const subtitles = {subtitles_json};
-        
-        video.addEventListener('timeupdate', function() {{
-            const currentTime = video.currentTime;
-            let currentSubtitle = '';
-            
-            for (let i = 0; i < subtitles.length; i++) {{
-                const sub = subtitles[i];
-                if (currentTime >= sub.start && currentTime <= sub.end) {{
-                    currentSubtitle = sub.text;
-                    break;
-                }}
-            }}
-            
-            subtitleDisplay.textContent = currentSubtitle;
-        }});
-        </script>
-        """, unsafe_allow_html=True)
-        
+            """
+            st.components.v1.html(video_html, height=400)
+        else:
+            st.warning("Video content not available. Please regenerate subtitles.")
+    
     with col2:
         st.markdown('<h3 class="card-header"><span class="icon">📝</span>Subtitle Controls</h3>', unsafe_allow_html=True)
         
@@ -590,27 +560,14 @@ if st.session_state.video_path and st.session_state.subtitles:
         st.session_state.position = position
         
         st.markdown("</div>", unsafe_allow_html=True)
-        
-        # Update styles based on settings
-        position_map = {
-            "Bottom (Default)": "60px",
-            "Middle": "50%",
-            "Top": "100px"
-        }
-        st.markdown(f"""
-        <style>
-            .subtitle-display {{
-                font-size: {font_size}rem;
-                bottom: {position_map[position]};
-            }}
-        </style>
-        """, unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)  # Close card
     
-    # Display subtitles timeline
+    # Display subtitles timeline with editing
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<h2 class="card-header"><span class="icon">📋</span>Subtitle Timeline</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="card-header"><span class="icon">📋</span>Edit Subtitles</h2>', unsafe_allow_html=True)
+    
+    st.info("Click on any subtitle to edit its text. Changes will be reflected in the video player.")
     
     # Create a scrollable container for subtitles
     subtitle_container = st.container()
@@ -624,12 +581,27 @@ if st.session_state.video_path and st.session_state.subtitles:
             start_formatted = f"{int(start_time//60):02d}:{int(start_time%60):02d}"
             end_formatted = f"{int(end_time//60):02d}:{int(end_time%60):02d}"
             
-            st.markdown(f"""
-            <div class="subtitle-item">
-                <div class="subtitle-time">🕒 {start_formatted} - {end_formatted}</div>
-                <div class="subtitle-text">{text}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.expander(f"🕒 {start_formatted} - {end_formatted}", expanded=False):
+                # Display current subtitle
+                st.markdown(f'<div class="subtitle-text">{text}</div>', unsafe_allow_html=True)
+                
+                # Edit subtitle option
+                edited_text = st.text_area(
+                    "Edit subtitle:",
+                    value=text,
+                    key=f"edit_{i}",
+                    height=100
+                )
+                
+                if st.button(f"Update Subtitle {i+1}", key=f"update_{i}"):
+                    st.session_state.subtitles[i]['text'] = edited_text
+                    
+                    # Update VTT content
+                    vtt_content = create_vtt_file(st.session_state.subtitles)
+                    st.session_state.vtt_base64 = base64.b64encode(vtt_content.encode('utf-8')).decode('utf-8')
+                    
+                    st.success("Subtitle updated! Refresh the page to see changes in the video player.")
+                    st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)  # Close card
 
@@ -646,8 +618,8 @@ with col1:
     st.markdown("""
     <div style="text-align: center; padding: 1.5rem;">
         <div style="font-size: 3rem; color: var(--primary);">⚡</div>
-        <h3 style="color: var(--primary);">Real-Time Sync</h3>
-        <p style="color: var(--light);">Subtitles displayed directly on your video with perfect timing</p>
+        <h3 style="color: var(--primary);">Embedded Subtitles</h3>
+        <p style="color: var(--light);">Subtitles embedded directly in the video player</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -655,17 +627,17 @@ with col2:
     st.markdown("""
     <div style="text-align: center; padding: 1.5rem;">
         <div style="font-size: 3rem; color: var(--accent);">🎯</div>
-        <h3 style="color: var(--accent);">Professional Quality</h3>
-        <p style="color: var(--light);">Cinema-style subtitles with customizable positioning and styling</p>
+        <h3 style="color: var(--accent);">Direct Editing</h3>
+        <p style="color: var(--light);">Edit subtitles directly in the web interface</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown("""
     <div style="text-align: center; padding: 1.5rem;">
-        <div style="font-size: 3rem; color: var(--accent-alt);">🎨</div>
-        <h3 style="color: var(--accent-alt);">Easy Customization</h3>
-        <p style="color: var(--light);">Adjust font size, position, and edit individual subtitles</p>
+        <div style="font-size: 3rem; color: var(--accent-alt);">🎨</span></div>
+        <h3 style="color: var(--accent-alt);">Professional Export</h3>
+        <p style="color: var(--light);">Export subtitles in VTT or JSON format</p>
     </div>
     """, unsafe_allow_html=True)
 
