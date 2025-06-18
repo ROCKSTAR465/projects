@@ -446,13 +446,12 @@ def get_base64_encoded_file(file_path):
         return base64.b64encode(f.read()).decode()
 
 # Main UI
-st.markdown('<h1 class="main-header floating">SubNXT</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header floating">SubNXT Pro: AI Subtitle Generator</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem auto; color: var(--light);">Transform your videos with AI-powered subtitle generation. Fast, accurate, and beautifully designed.</p>', unsafe_allow_html=True)
 # Sidebar for controls
 with st.sidebar:
     st.markdown('<div class="sidebar-header"><span class="icon">🛠️</span>Configuration</div>', unsafe_allow_html=True)
     with st.container():
-        # st.markdown('<div class="card">', unsafe_allow_html=True)
         model_type = st.selectbox(
             "**Whisper Model**",
             ["tiny", "base", "small", "medium", "large"],
@@ -461,6 +460,7 @@ with st.sidebar:
         )
         
         st.markdown("""
+        <div class="card" style="margin-top: 1.5rem;">
         <div style="background: rgba(64, 224, 208, 0.15); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
             <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Model Comparison:</h4>
             <ul style="padding-left: 1.5rem; color: var(--light);">
@@ -476,16 +476,17 @@ with st.sidebar:
         
 # Feature badges
 st.markdown("""
+
 <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;">
-    <div class="feature-badge">
+    <div class=" card feature-badge">
         <span class="feature-badge-dot dot-primary"></span>
         Real-time Processing
     </div>
-    <div class="feature-badge">
+    <div class="card feature-badge">
         <span class="feature-badge-dot dot-accent"></span>
         Multiple Formats
     </div>
-    <div class="feature-badge">
+    <div class="card feature-badge">
         <span class="feature-badge-dot dot-accent-alt"></span>
         Embedded Playback
     </div>
@@ -499,7 +500,7 @@ with col1:
     # Upload Section
     with st.container():
         # st.markdown('<div class="glass card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-header"><span class="icon">📤</span>Upload Media</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass card card-header"><span class="icon">📤</span>Upload Media</div>', unsafe_allow_html=True)
         
         # File upload
         uploaded_file = st.file_uploader(
@@ -564,14 +565,14 @@ with col1:
         
         # Video Preview Section
         if st.session_state.video_path and st.session_state.subtitles:
-            # st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<div class="card-header"><span class="icon">🎥</span>Video Preview</div>', unsafe_allow_html=True)
-            
             if st.session_state.video_base64 and st.session_state.vtt_base64:
                 # Create HTML video player with embedded subtitles
                 video_html = f"""
+                <div class="card" style="margin-top: 1.5rem;">
                 <div class="video-container">
-                    <video width="100%" height="360" controls style="border-radius: 10px; background: #000;">
+                <div class="card-header"><span class="icon">🎥</span>Video Preview</div>
+                <hr class="glass-alt" style="border: 1px solid var(--primary); margin: 1.5rem 0;">
+                    <video width="100%" height="100%" controls style="border-radius: 10px; background: #000;">
                         <source src="data:video/mp4;base64,{st.session_state.video_base64}" type="video/mp4">
                         <track src="data:text/vtt;base64,{st.session_state.vtt_base64}" kind="subtitles" 
                                srclang="en" label="English" default>
@@ -586,8 +587,7 @@ with col1:
             st.markdown('</div>', unsafe_allow_html=True)  # Close card
             
             # Subtitle Editor Section
-            # st.markdown('<div class="glass card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<div class="card-header"><span class="icon">📝</span>Subtitle Timeline</div>', unsafe_allow_html=True)
+            st.markdown('<div class="glass card card-header"><span class="icon">📝</span>Subtitle Timeline</div>', unsafe_allow_html=True)
             st.info("Click on any subtitle to edit its text. Changes will be reflected in the video player.")
             
             # Create a scrollable container for subtitles
@@ -627,36 +627,10 @@ with col1:
             st.markdown('</div>', unsafe_allow_html=True)  # Close card
 
 with col2:
-#     # Settings Card
-#     with st.container():
-#         st.markdown('<div class="glass-alt card">', unsafe_allow_html=True)
-#         st.markdown('<div class="card-header"><span class="icon">⚙️</span>Settings</div>', unsafe_allow_html=True)
-        
-#         model_type = st.selectbox(
-#             "**AI Model**",
-#             ["tiny", "base", "small", "medium", "large"],
-#             index=2,
-#             help="Larger models are more accurate but slower"
-#         )
-        
-#         st.markdown("""
-#         <div class="glass" style="padding: 1rem; border-radius: 12px; margin-top: 1rem;">
-#             <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Model Info:</h4>
-#             <ul style="padding-left: 1.5rem; color: var(--light);">
-#                 <li>• Tiny: ~39 MB, fastest processing</li>
-#                 <li>• Small: ~244 MB, best balance</li>
-#                 <li>• Large: ~1550 MB, highest accuracy</li>
-#             </ul>
-#         </div>
-#         """, unsafe_allow_html=True)
-        
-#         st.markdown('</div>', unsafe_allow_html=True)  # Close card
-    
     # Progress Card
     if st.session_state.processing:
         with st.container():
-            st.markdown('<div class="glass-alt card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<div class="card-header"><span class="icon">⏳</span>Processing</div>', unsafe_allow_html=True)
+            st.markdown('<div class="glass-alt card card-header"><span class="icon">⏳</span>Processing</div>', unsafe_allow_html=True)
             
             # Simulated progress bar
             progress_bar = st.progress(0)
@@ -673,8 +647,7 @@ with col2:
     # Download Card
     if st.session_state.video_path and st.session_state.subtitles:
         with st.container():
-            # st.markdown('<div class="glass-alt card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<div class="card-header"><span class="icon">📥</span>Export Subtitles</div>', unsafe_allow_html=True)
+            st.markdown('<div class="glass-alt card card-header"><span class="icon">📥</span>Export Subtitles</div>', unsafe_allow_html=True)
             
             # Download VTT file
             vtt_content = create_vtt_file(st.session_state.subtitles)
@@ -697,8 +670,9 @@ with col2:
             )
             
             # Subtitle settings
-            # st.markdown('<div class="glass" style="padding: 1rem; border-radius: 12px; margin-top: 1.5rem;">', unsafe_allow_html=True)
-            st.markdown('<h4 style="color: var(--primary);"><span class="icon">⚙️</span>Subtitle Settings</h4>', unsafe_allow_html=True)
+            st.markdown("""
+            <div class="glass card" style="padding: 1rem; border-radius: 12px; margin-top: 1.5rem;">
+            <h4 style="color: var(--primary);"><span class="icon">⚙️</span>Subtitle Settings</h4>""", unsafe_allow_html=True)
             
             # Font size slider
             font_size = st.slider("Font Size", 1.0, 3.0, st.session_state.font_size, 0.1, 
@@ -712,18 +686,15 @@ with col2:
                                   index=0,
                                   help="Position of subtitles on video",
                                   key="position_select")
-            st.session_state.position = position
-            
-            st.markdown("</div>", unsafe_allow_html=True)
-            
+            st.session_state.position = position           
             st.markdown('</div>', unsafe_allow_html=True)  # Close card
     
     # Features Card
     with st.container():
-        # st.markdown('<div class="glass-alt card" style="margin-top: 1.5rem;">', unsafe_allow_html=True)
-        st.markdown('<div class="card-header"><span class="icon">✨</span>Features</div>', unsafe_allow_html=True)
-        
         st.markdown("""
+        <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header"><span class="icon">✨</span>Features</div>
+        <hr class="glass-alt" style="border: 1px solid var(--primary); margin: 0.5rem 0;">
         <div style="padding: 0.5rem 0;">
             <div style="display: flex; align-items: center; margin: 15px 0;">
                 <span style="color: var(--primary); font-size: 1.5rem; margin-right: 10px;">✓</span>
@@ -744,17 +715,17 @@ with col2:
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)  # Close card
+        st.markdown('</div>', unsafe_allow_html=True)
+        # st.markdown('</div>', unsafe_allow_html=True)  # Close card
 
 # Footer
 st.markdown("""
-<div class="footer glass-alt">
+<div class="footer card glass-alt">
     <p style="color: var(--light);">Built with ❤️ using Streamlit and OpenAI Whisper • SubNXT Pro v2.0</p>
     <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
         <a href="#" style="color: var(--primary);">🌐 Website</a>
-        <a href="#" style="color: var(--accent);">🐦 Twitter</a>
         <a href="#" style="color: var(--accent-alt);">💼 LinkedIn</a>
-        <a href="#" style="color: var(--primary);">📧 Contact</a>
+        <a href="#" style="color: var(--primary);">📧 kumaarsk390@gmail.com</a>
     </div>
 </div>
 """, unsafe_allow_html=True)
