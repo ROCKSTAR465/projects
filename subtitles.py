@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using F
 
 # Configure Streamlit page
 st.set_page_config(
-    page_title="SubNXT Pro: AI Subtitle Generator",
+    page_title="SubGEN Pro: AI Subtitle Generator",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded"
