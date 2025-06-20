@@ -446,7 +446,7 @@ def get_base64_encoded_file(file_path):
         return base64.b64encode(f.read()).decode()
 
 # Main UI
-st.markdown('<h1 class="main-header floating">SubNXT Pro: AI Subtitle Generator</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header floating">SubGEN Pro: AI Subtitle Generator</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem auto; color: var(--light);">Transform your videos with AI-powered subtitle generation. Fast, accurate, and beautifully designed.</p>', unsafe_allow_html=True)
 # Sidebar for controls
 with st.sidebar:
